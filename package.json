@@ -1,0 +1,25 @@
+{
+  "name": "console-info-stream",
+  "version": "1.0.0",
+  "description": ""
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --ext js,mjs",
+    "start": "node index.mjs",
+    "start-dev": "nodemon --experimental-modules ./index.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Sears",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-config-standard": "17.1.0",
+    "eslint-plugin-disable": "2.0.3",
+    "eslint-plugin-max-len-2": "0.0.5",
+    "eslint-plugin-standard": "5.0.0",
+    "nodemon": "3.0.1"
+  },
+  "dependencies": {
+    "eslint": "^8.46.0"
+  }
+}
