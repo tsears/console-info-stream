@@ -1,5 +1,5 @@
 import { Feed } from './Feed.mjs'
-import colors from 'colors/safe'
+import colors from 'colors/safe.js'
 
 class FeedStatusFeed extends Feed {
   constructor (feedInstances) {

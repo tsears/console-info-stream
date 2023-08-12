@@ -1,36 +1,36 @@
 import { variableDelayMap } from './utils/index.mjs'
 import feeds from './feeds/feeds.mjs'
-import colors from 'colors/safe'
-
-// "Typing"
-const BASE_DELAY = 20
-const DELAY_FUZZ = 90
-
-// how often to check for updates
-const FEED_POLLING_INTERVAL = 10 * 1000
+import colors from 'colors/safe.js'
+import 'dotenv/config'
 
 const queue = []
 const feedInstances = []
 
 const initFeed = new feeds.FeedStatusFeed(feedInstances)
+const weatherFeed = new feeds.WeatherFeed(process.env.WEATHER_API_KEY)
 
 feedInstances.push(
   initFeed,
+  weatherFeed
 )
 
-// 'this' fuckery right here
+// deal with some 'this' shenanigans
 const out = process.stdout.write.bind(process.stdout)
 const error = console.error.bind(console)
 
 async function typer (string) {
+  const BASE_DELAY = 20
+  const DELAY_FUZZ = 90
+
   const chars = string.split('').concat('\n')
-  await variableDelayMap(out, BASE_DELAY, DELAY_FUZZ, chars)
+
+  return await variableDelayMap(out, BASE_DELAY, DELAY_FUZZ, chars)
 }
 
 async function start () {
   await typer('Initializing feeds...\n')
   await typer(`${colors.underline(initFeed.name)}\n`)
-  await typer(initFeed.data)
+  await typer(initFeed.data + '\n')
 }
 
 function addToQueue (data) {
@@ -51,11 +51,14 @@ feedInstances.forEach(instance => {
 
 // no top-level await
 start().then(() => {
+  // delay before pulling next item off the queue
+  const FEED_POLLING_INTERVAL = 10 * 1000
+
   setInterval(async () => {
     try {
       if (queue.length > 0) {
         const task = queue.shift()
-        await typer(`${colors.underline(task.name)}\n\n${task.data}`)
+        await typer(`${colors.underline(task.name)}\n\n${task.data}\n\n`)
       }
     } catch (e) {
       error(e)
