@@ -54,14 +54,23 @@ start().then(() => {
   // delay before pulling next item off the queue
   const FEED_POLLING_INTERVAL = 10 * 1000
 
-  setInterval(async () => {
-    try {
-      if (queue.length > 0) {
-        const task = queue.shift()
-        await typer(`${colors.underline(task.name)}\n\n${task.data}\n\n`)
+  // With all the artifical delay being introduced due to the simulated typing,
+  // theres no guarantee that a given item will finish displaying before the
+  // next interval would be hit, so instead of using setInterval we need to do
+  // this wacky stuff with setTimeout and a recursive call.
+  // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
+  ;(function loop () {
+    setTimeout(async () => {
+      try {
+        if (queue.length > 0) {
+          const task = queue.shift()
+          await typer(`${colors.underline(task.name)}\n\n${task.data}\n\n`)
+        }
+      } catch (e) {
+        error(e)
       }
-    } catch (e) {
-      error(e)
-    }
-  }, FEED_POLLING_INTERVAL)
+
+      loop()
+    }, FEED_POLLING_INTERVAL)
+  })()
 })
