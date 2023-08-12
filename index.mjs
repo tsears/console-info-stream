@@ -7,10 +7,12 @@ const queue = []
 const feedInstances = []
 
 const initFeed = new feeds.FeedStatusFeed(feedInstances)
+const processInfoFeed = new feeds.ProcessInfoFeed()
 const weatherFeed = new feeds.WeatherFeed(process.env.WEATHER_API_KEY)
 
 feedInstances.push(
   initFeed,
+  processInfoFeed,
   weatherFeed
 )
 
