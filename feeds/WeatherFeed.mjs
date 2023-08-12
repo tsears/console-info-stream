@@ -27,13 +27,15 @@ class WeatherFeed extends Feed {
 
   get data () {
     const { current, temp, humidity, forecast, high, low } = this._weather
+    const lastUpdate = new Date(this._lastWeatherUpdate).toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
 
     return `Current: ${current}
-Current Temp: ${temp}
+Current Temp: ${temp}°
 Humidity: ${humidity}%
 Forecast: ${forecast}
-High: ${high}
-Low: ${low}`
+High: ${high}°
+Low: ${low}°
+Last Updated: ${lastUpdate}`
   }
 
   get status () {
