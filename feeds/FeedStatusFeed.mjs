@@ -1,21 +1,22 @@
 import { Feed } from './Feed.mjs'
+import colors from 'colors/safe'
 
 class FeedStatusFeed extends Feed {
-  constructor (queue, args) {
-    super(queue)
-    this._name = 'Feed Status'
-    this._feedInstances = args.feedInstances
+  constructor (feedInstances) {
+    super()
+    this._name = 'Feed Statuses'
+    this._feedInstances = feedInstances
     this._status = 'OK'
+
+    setInterval(this.publish.bind(this), 15 * 1000)
   }
 
   get data () {
     const streamStatus = this._feedInstances.map(f => {
-      return `${f.name}... ${f.status}`
+      return `${f.name}... ${colors.green(f.status)}`
     })
 
-    return `Initializing data streams...
-${streamStatus.join('\n')}
-`
+    return streamStatus.join('\n')
   }
 }
 

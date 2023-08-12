@@ -1,8 +1,9 @@
 class Feed {
-  constructor (queue) {
-    this.queue = queue
+  constructor () {
     this._name = 'UNSET'
     this._status = 'UNKNOWN'
+
+    this._subscribers = []
   }
 
   get status () {
@@ -11,6 +12,19 @@ class Feed {
 
   get name () {
     return this._name
+  }
+
+  subscribe (cb) {
+    this._subscribers.push(cb)
+  }
+
+  publish () {
+    const payload = {
+      name: this._name,
+      data: this.data,
+    }
+
+    this._subscribers.forEach(s => s(payload))
   }
 }
 
