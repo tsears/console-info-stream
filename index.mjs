@@ -1,7 +1,7 @@
+import 'dotenv/config'
 import { variableDelayMap } from './utils/index.mjs'
 import feeds from './feeds/feeds.mjs'
 import colors from 'colors/safe.js'
-import 'dotenv/config'
 
 const queue = []
 const feedInstances = []
@@ -9,18 +9,15 @@ const feedInstances = []
 const initFeed = new feeds.FeedStatusFeed(feedInstances)
 const processInfoFeed = new feeds.ProcessInfoFeed()
 const weatherFeed = new feeds.WeatherFeed(process.env.WEATHER_API_KEY)
+const calendarFeed = new feeds.CalendarFeed()
 
-feedInstances.push(
-  initFeed,
-  processInfoFeed,
-  weatherFeed
-)
+feedInstances.push(initFeed, processInfoFeed, weatherFeed, calendarFeed)
 
 // deal with some 'this' shenanigans
 const out = process.stdout.write.bind(process.stdout)
 const error = console.error.bind(console)
 
-async function typer (string) {
+async function typer(string) {
   const BASE_DELAY = 20
   const DELAY_FUZZ = 90
 
@@ -29,16 +26,16 @@ async function typer (string) {
   return await variableDelayMap(out, BASE_DELAY, DELAY_FUZZ, chars)
 }
 
-async function start () {
+async function start() {
   await typer('Initializing feeds...\n')
   await typer(`${colors.underline(initFeed.name)}\n`)
   await typer(initFeed.data + '\n')
 }
 
-function addToQueue (data) {
+function addToQueue(data) {
   // only one item from a given feed can be in the queue at a given time, but
   // newer data can overwrite data already in the queue...
-  const oldDataIndex = queue.findIndex(q => q.name === data.name)
+  const oldDataIndex = queue.findIndex((q) => q.name === data.name)
 
   if (oldDataIndex > -1) {
     queue[oldDataIndex] = data
@@ -47,7 +44,7 @@ function addToQueue (data) {
   }
 }
 
-feedInstances.forEach(instance => {
+feedInstances.forEach((instance) => {
   instance.subscribe(addToQueue)
 })
 
@@ -61,12 +58,12 @@ start().then(() => {
   // next interval would be hit, so instead of using setInterval we need to do
   // this wacky stuff with setTimeout and a recursive call.
   // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
-  ;(function loop () {
+  ;(function loop() {
     setTimeout(async () => {
       try {
         if (queue.length > 0) {
           const task = queue.shift()
-          await typer(`${colors.underline(task.name)}\n\n${task.data}\n\n`)
+          await typer(`${colors.underline.bold(task.name)}\n\n${task.data}\n\n`)
         }
       } catch (e) {
         error(e)

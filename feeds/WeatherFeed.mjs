@@ -5,7 +5,7 @@ import colors from 'colors/safe.js'
 const WEATHER_UPDATE_INTERVAL = 60 * 60 * 1000 // hourly
 
 class WeatherFeed extends Feed {
-  constructor (apiKey) {
+  constructor(apiKey) {
     super()
     this._weatherApiKey = apiKey
     this._name = 'Weather'
@@ -25,9 +25,12 @@ class WeatherFeed extends Feed {
     setInterval(this._updateWeatherData.bind(this), WEATHER_UPDATE_INTERVAL)
   }
 
-  get data () {
+  get data() {
     const { current, temp, humidity, forecast, high, low } = this._weather
-    const lastUpdate = new Date(this._lastWeatherUpdate).toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
+    const lastUpdate = new Date(this._lastWeatherUpdate).toLocaleString(
+      'en-us',
+      { timeZone: 'America/Los_Angeles' },
+    )
 
     return `Current: ${current}
 Current Temp: ${temp}°
@@ -38,16 +41,19 @@ Low: ${low}°
 Last Updated: ${lastUpdate}`
   }
 
-  get status () {
+  get status() {
     // if we haven't updated the weather in 1hr 1min, then something is screwy
-    if (!this._lastWeatherUpdate || Date.now() - WEATHER_UPDATE_INTERVAL - 60000 > this._lastWeatherUpdate) {
+    if (
+      !this._lastWeatherUpdate ||
+      Date.now() - WEATHER_UPDATE_INTERVAL - 60000 > this._lastWeatherUpdate
+    ) {
       return colors.red('ERROR')
     } else {
       return colors.green('OK')
     }
   }
 
-  async _updateWeatherData () {
+  async _updateWeatherData() {
     const url = 'https://api.openweathermap.org/data/3.0/onecall'
     const queryParams = {
       lat: '45.5391889',
@@ -79,6 +85,4 @@ Last Updated: ${lastUpdate}`
   }
 }
 
-export {
-  WeatherFeed,
-}
+export { WeatherFeed }

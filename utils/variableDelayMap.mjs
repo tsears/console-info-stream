@@ -1,4 +1,4 @@
-function processVariableDelayMapItem (cb, baseDelay, fuzzMax, resolve, array) {
+function processVariableDelayMapItem(cb, baseDelay, fuzzMax, resolve, array) {
   if (array.length === 0) {
     resolve()
     return
@@ -13,7 +13,7 @@ function processVariableDelayMapItem (cb, baseDelay, fuzzMax, resolve, array) {
   }, delay)
 }
 
-function variableDelayMap (cb, baseDelay = 0, fuzzMax = 0, array) {
+function variableDelayMap(cb, baseDelay = 0, fuzzMax = 0, array) {
   // lets not mutate the passed array
   const clonedArray = [...array]
   return new Promise((resolve, reject) => {
@@ -25,6 +25,4 @@ function variableDelayMap (cb, baseDelay = 0, fuzzMax = 0, array) {
   })
 }
 
-export {
-  variableDelayMap,
-}
+export { variableDelayMap }

@@ -5,6 +5,7 @@
   "main": "index.mjs",
   "type": "module",
   "scripts": {
+    "format": "prettier . --write",
     "lint": "eslint . --ext js,mjs",
     "start": "node index.mjs",
     "start-dev": "nodemon --experimental-modules ./index.mjs",
@@ -13,11 +14,16 @@
   "author": "Tom Sears",
   "license": "MIT",
   "devDependencies": {
+    "@google-cloud/local-auth": "2.1.0",
+    "eslint-config-prettier": "9.1.0",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-disable": "2.0.3",
     "eslint-plugin-max-len-2": "0.0.5",
+    "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-standard": "5.0.0",
-    "nodemon": "3.0.1"
+    "googleapis": "105.0.0",
+    "nodemon": "3.0.1",
+    "prettier": "3.3.3"
   },
   "dependencies": {
     "axios": "1.4.0",

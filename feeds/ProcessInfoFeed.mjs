@@ -2,7 +2,7 @@ import { Feed } from './Feed.mjs'
 import { uptime, memoryUsage, platform, pid, version } from 'node:process'
 
 class ProcessInfoFeed extends Feed {
-  constructor () {
+  constructor() {
     super()
     this._name = 'Process Info'
     this._status = 'OK'
@@ -11,7 +11,7 @@ class ProcessInfoFeed extends Feed {
     this.publish()
   }
 
-  get data () {
+  get data() {
     return `Node Version: ${version}
 Platform: ${platform}
 PID: ${pid}
@@ -20,6 +20,4 @@ Uptime: ${Math.round(Math.floor(uptime()) / 60)} minutes`
   }
 }
 
-export {
-  ProcessInfoFeed,
-}
+export { ProcessInfoFeed }

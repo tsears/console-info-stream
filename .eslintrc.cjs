@@ -8,27 +8,24 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  plugins: [
-    'disable',
-  ],
-  extends: [
-    'standard',
-  ],
-  globals: {
-  },
-  settings: {
-  },
+  plugins: ['disable'],
+  extends: ['standard', 'plugin:prettier/recommended'],
+  globals: {},
+  settings: {},
   rules: {
     'no-var': 1,
     'no-debugger': 2,
     'spaced-comment': 1,
-    'comma-dangle': ['error', {
-      arrays: 'always-multiline',
-      objects: 'always-multiline',
-      imports: 'always-multiline',
-      exports: 'always-multiline',
-      functions: 'ignore',
-    }],
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'ignore',
+      },
+    ],
     indent: ['error', 2],
     'max-len': [1, 80, { ignoreUrls: true, ignoreStrings: true }],
     'one-var': 1,
