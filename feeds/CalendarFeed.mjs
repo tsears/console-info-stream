@@ -54,9 +54,10 @@ async function saveCredentials(client) {
  * Load or request or authorization to call APIs.
  *
  */
-async function authorize() {
+async function authorize(forceReauth = false) {
   let client = await loadSavedCredentialsIfExist()
-  if (client) {
+
+  if (!forceReauth && client) {
     return client
   }
   client = await authenticate({
@@ -166,6 +167,14 @@ class CalendarFeed extends Feed {
     } catch (e) {
       console.error('Error retreiving calendar events')
       console.error(e.message)
+
+      if (e.message === 'invalid_grant') {
+        authorize(true).then((auth) => {
+          this.auth = auth
+          this._updateCalendarData()
+        })
+        return
+      }
       this._status = 'ERROR'
     }
   }
